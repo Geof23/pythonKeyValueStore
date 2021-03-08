@@ -12,6 +12,43 @@ For users to share the store, they must share:
 * mutual reachability on a *private* network, with *trusted* users
 * open TCP ports 9999 - 10100
 
+Client API:
+
+```python
+class keystoreClient:
+    def __init__(self, store: str, ipaddr = ''):
+        """Init a client at path for store file `store`.
+        `ipaddr` is optional for overriding the address of the 
+        server.
+        If there exists a lockfile (at store + '.lock'), the lock
+        file is read for the server connection info, and the client
+        makes a connection.  Otherwise, the client spins up a new
+        server from `hostname` or `ipaddr`.
+        """
+    def put(self, key: str, val: any):
+        """ Store `val` at `key`
+        Can be any type supported by `pickle`
+        """
+    
+    def get(self, key: str) -> any:
+        """get value at `key`
+        Can be any type supported by `pickle`
+        """
+        
+    def delete(self, key: str):
+        """delete entry for `key`
+        """
+        
+    def size(self):
+        """return the number of entries in the store
+        """
+        
+    def shutdown(self):
+        """shutdown the server, if it was created by this client
+        """
+
+```
+
 This is a simple client-server system, where:
 
 * initial access / creation of the keystore initializes a store file
