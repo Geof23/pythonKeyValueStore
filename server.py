@@ -84,6 +84,9 @@ class myLock:
         trace("lock released on " + str(self.id))
     def __del__(self):
         trace("destroying lock " + str(self.id))
+
+class myTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
+    pass
             
 class keystoreServer:
     protectCont = myLock()
@@ -118,7 +121,7 @@ class keystoreServer:
         self.beenShutdown = False
         self.thread = threading.Thread(group = None, target=self.runServer, args=(addr, port)).start()
     def runServer(self, addr, port):
-        with socketserver.TCPServer((addr, port), keystoreHandler) as server:
+        with myTCPServer((addr, port), keystoreHandler) as server:
             print('**launching server at ' + addr + ':' + str(port))
             self.handler = server
             server.serve_forever()
